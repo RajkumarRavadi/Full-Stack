@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step by Step Form</title>
+    <style>
+        /* Your CSS styles here */
+        body {
+            background: linear-gradient(to bottom, hsl(201, 50%, 60%), hsl(201, 50%, 30%));
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        h1, h2 {
+            text-align: center;
+            color: hsl(0, 0%, 100%);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        ul.items {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        
+        ul.items li {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background: hsl(0, 0%, 100%);
+            border-radius: 50%;
+            opacity: 0.4;
+            cursor: pointer;
+        }
+        
+        ul.items li.active {
+            opacity: 1;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        fieldset {
+            position: relative;
+            width: 300px;
+            height: 60px;
+            background: hsl(0, 0%, 100%);
+            border-radius: 3px;
+            opacity: 0;
+            transform: scale(0.2);
+            transition: all 0.4s ease-in-out;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border: none;
+            outline: none;
+            padding: 0;
+        }
+        
+        fieldset input, fieldset p {
+            display: inline-block;
+            width: 200px;
+            margin-left: 50px;
+            color: hsl(0, 0%, 20%);
+            font-size: 16px;
+            letter-spacing: 1px;
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+        
+        fieldset p {
+            margin-top: 22px;
+            text-align: center;
+        }
+        
+        fieldset .icon {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        fieldset .icon i {
+            position: absolute;
+            display: block;
+        }
+        
+        fieldset .icon.left {
+            left: 10px;
+        }
+        
+        fieldset .icon.right {
+            right: 10px;
+        }
+        
+        fieldset .icon.button:hover {
+            background: hsl(0, 0%, 95%);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        fieldset.enable {
+            z-index: 1;
+            opacity: 1;
+            transform: scale(1);
+            animation: enable 0.5s ease-out 0.2s;
+        }
+        
+        fieldset.disable {
+            opacity: 0;
+            transform: translateY(120px) scale(0.9);
+        }
+        
+        @keyframes enable {
+            0% {
+                opacity: 0;
+                transform: scale(0.2);
+            }
+            60% {
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes error {
+            0%, 50%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-3deg);
+            }
+            75% {
+                transform: rotate(3deg);
+            }
+        }
+        
+        /* Icons in CSS */
+        .icon .arrow {
+            width: 2px;
+            height: 17px;
+            top: 5px;
+            left: 14px;
+            background: hsl(0, 0%, 20%);
+        }
+        
+        .icon .arrow::before {
+            width: 6px;
+            height: 6px;
+            bottom: -1px;
+            left: -3px;
+            border-color: hsl(0, 0%, 20%);
+            border-right: 2px solid;
+            border-bottom: 2px solid;
+            transform: rotate(45deg);
+        }
+        
+        .icon .user {
+            width: 20px;
+            height: 10px;
+            bottom: 5px;
+            left: 5px;
+            box-shadow: 0 0 0 2px hsl(0, 0%, 20%) inset;
+            border-radius: 6px 6px 3px 3px;
+        }
+        
+        .icon .user::before {
+            width: 10px;
+            height: 10px;
+            top: -9px;
+            left: 5px;
+            box-shadow: 0 0 0 2px hsl(0, 0%, 20%) inset;
+            border-radius: 50%;
+        }
+        
+        .icon .letter {
+            width: 20px;
+            height: 12px;
+            top: 9px;
+            left: 5px;
+            box-shadow: 0 0 0 2px hsl(0, 0%, 20%) inset;
+            border-radius: 3px;
+        }
+        
+        .icon .letter::before, .icon .letter::after {
+            width: 11px;
+            height: 2px;
+            top: 4px;
+            background: hsl(0, 0%, 20%);
+        }
+        
+        .icon .letter::before {
+            left: 0;
+            transform: rotate(30deg);
+        }
+        
+        .icon .letter::after {
+            right: 0;
+            transform: rotate(-30deg);
+        }
+        
+        .icon .lock {
+            width: 20px;
+            height: 16px;
+            top: 9px;
+            left: 5px;
+            box-shadow: 0 0 0 2px hsl(0, 0%, 20%) inset;
+            border-radius: 3px;
+        }
+        
+        .icon .lock::before {
+            width: 8px;
+            height: 8px;
+            top: -4px;
+            left: 4px;
+            border: 2px solid transparent;
+            border-top: 2px solid hsl(0, 0%, 20%);
+            border-right: 2px solid hsl(0, 0%, 20%);
+            border-radius: 50%;
+            transform: rotate(-45deg);
+        }
+        
+        .icon .lock::after {
+            width: 6px;
+            height: 7px;
+            top: 4px;
+            left: 7px;
+            box-shadow: 0 0 0 2px hsl(0, 0%, 20%) inset;
+        }
+        
+        .icon .heart {
+            width: 10px;
+            height: 10px;
+            top: 11px;
+            left: 7px;
+            background: hsl(201, 100%, 60%);
+            transform: rotate(45deg);
+        }
+        
+        .icon .heart::before, .icon .heart::after {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: hsl(201, 100%, 60%);
+        }
+        
+        .icon .heart::before {
+            left: -6px;
+        }
+        
+        .icon .heart::after {
+            top: -6px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Step by Step Form</h1>
+    <h2>Just practicing Javascript</h2>
+    <ul class="items">
+        <li class="active"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <form>
+        <fieldset class="username enable">
+            <div class="icon left">
+                <i class="user"></i>
+            </div>
+            <input type="text" name="username" placeholder="Username">
+            <div class="icon right button">
+                <i class="arrow"></i>
+            </div>
+        </fieldset>
+        <fieldset class="email">
+            <div class="icon left">
+                <i class="letter"></i>
+            </div>
+            <input type="email" name="email" placeholder="Email">
+            <div class="icon right button">
+                <i class="arrow"></i>
+            </div>
+        </fieldset>
+        <fieldset class="password">
+            <div class="icon left">
+                <i class="lock"></i>
+            </div>
+            <input type="password" name="password" placeholder="Password">
+            <div class="icon right button">
+                <i class="arrow"></i>
+            </div>
+        </fieldset>
+        <fieldset class="thanks">
+            <div class="icon left">
+                <i class="heart"></i>
+            </div>
+            <p>Thanks for your time</p>
+            <div class="icon right">
+                <i class="heart"></i>
+            </div>
+        </fieldset>
+    </form>
+
+    <script>
+        // Your JavaScript code here
+        function init() {
+            // Generate li foreach fieldset
+            var ul = document.querySelector('ul.items');
+            for (var i = 0; i < count; i++) {
+                var li = document.createElement("li");
+                ul.appendChild(li);
+            }
+            // Add class active on first li
+            ul.firstChild.classList.add('active');
+        }
+
+        function next(target) {
+            var input = target.previousElementSibling;
+
+            // Check if input is empty
+            if (input.value === '') {
+                body.classList.add('error');
+            } else {
+                body.classList.remove('error');
+
+                var enable = document.querySelector('form fieldset.enable');
+                var nextEnable = enable.nextElementSibling;
+                enable.classList.remove('enable');
+                enable.classList.add('disable');
+                nextEnable.classList.add('enable');
+
+                // Switch active class on left list
+                var active = document.querySelector('ul.items li.active');
+                var nextActive = active.nextElementSibling;
+                active.classList.remove('active');
+                nextActive.classList.add('active');
+            }
+        }
+
+        function keyDown(event) {
+            var key = event.keyCode;
+            var target = document.querySelector('fieldset.enable .button');
+            if (key == 13 || key == 9) next(target);
+        }
+
+        var body = document.querySelector('body');
+        var form = document.querySelector('form');
+        var count = form.querySelectorAll('fieldset').length;
+
+        window.onload = init;
+        document.body.onmouseup = function (event) {
+            var target = event.target || event.toElement;
+            if (target.classList.contains("button")) next(target);
+        };
+        document.addEventListener("keydown", keyDown, false);
+    </script>
+</body>
+</html>
